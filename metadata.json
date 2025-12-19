@@ -1,0 +1,7 @@
+{
+  "name": "Nearby",
+  "description": "Something interesting is closer than you think. Explore your surroundings through quiet observations and unfolding sequences.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
