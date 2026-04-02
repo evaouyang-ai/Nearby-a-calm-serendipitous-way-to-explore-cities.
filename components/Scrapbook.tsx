@@ -106,7 +106,7 @@ const Scrapbook: React.FC<ScrapbookProps> = ({ memories, isOpen, onClose, onRevi
 
       {/* Footer */}
       <div className="px-6 py-8 border-t border-slate-100 text-center">
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.5em]">Nearby Archive — Co-created with Emily</p>
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.5em]">Nearby Archive — Co-created with Eve</p>
       </div>
     </div>
   );

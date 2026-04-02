@@ -26,7 +26,7 @@ const ApiSetup: React.FC<ApiSetupProps> = ({ onComplete }) => {
       </h2>
       
       <p className="text-slate-400 mb-12 text-sm leading-relaxed">
-        Emily needs a connection to the Gemini network to help you notice what's around you.
+        Eve needs a connection to the Gemini network to help you notice what's around you.
       </p>
 
       <button
