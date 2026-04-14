@@ -1,3 +1,6 @@
+// components/JourneyInput.tsx
+// Search form below the hero image.
+// White card on parchment, outlined stamp button, square suggestion pills.
 
 import React, { useState } from 'react';
 
@@ -9,7 +12,21 @@ interface JourneyInputProps {
   hasHistory: boolean;
 }
 
-const JourneyInput: React.FC<JourneyInputProps> = ({ onStart, onDrift, onOpenJournal, isLoading, hasHistory }) => {
+const VIBES = [
+  'Quiet reading nooks',
+  'Sunlit courtyards',
+  'The smell of roasting coffee',
+  'Hidden garden walls',
+  'Soft jazz and low light',
+];
+
+const JourneyInput: React.FC<JourneyInputProps> = ({
+  onStart,
+  onDrift,
+  onOpenJournal,
+  isLoading,
+  hasHistory,
+}) => {
   const [prompt, setPrompt] = useState('');
   const [area, setArea] = useState('');
 
@@ -19,85 +36,218 @@ const JourneyInput: React.FC<JourneyInputProps> = ({ onStart, onDrift, onOpenJou
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-20 px-6 pb-20">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-serif-italic mb-4 text-slate-900">What's on your mind?</h2>
-        <p className="text-slate-600 text-sm md:text-base font-medium italic">Tell me a mood, a detail, or a simple curiosity.</p>
-      </div>
+    <div style={{ maxWidth: '560px', margin: '0 auto', padding: '56px 24px 80px' }}>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-2">
-          <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest ml-6">
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+        {/* Location input */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <label
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '9px',
+              fontWeight: 500,
+              color: '#1A1814',
+              opacity: 0.5,
+              textTransform: 'uppercase',
+              letterSpacing: '0.12em',
+              paddingLeft: '2px',
+            }}
+          >
             Where are you? (optional)
           </label>
           <input
             type="text"
             value={area}
-            onChange={(e) => setArea(e.target.value)}
-            placeholder="e.g., Kyoto, Brooklyn, or Leave blank for local"
-            className="w-full bg-white rounded-[1.5rem] px-6 py-5 text-slate-800 placeholder:text-slate-400 border border-slate-200 focus:outline-none focus:border-slate-400 transition-all text-sm md:text-base shadow-sm"
+            onChange={e => setArea(e.target.value)}
+            placeholder="e.g., Kyoto, Brooklyn, or leave blank for local"
             disabled={isLoading}
+            style={{
+              width: '100%',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #DDD8CE',
+              borderRadius: '4px',
+              padding: '12px 16px',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '14px',
+              color: '#1A1814',
+              outline: 'none',
+              boxSizing: 'border-box',
+              transition: 'border-color 180ms ease',
+            }}
+            onFocus={e => (e.currentTarget.style.borderColor = '#1A1814')}
+            onBlur={e => (e.currentTarget.style.borderColor = '#DDD8CE')}
           />
         </div>
 
-        <div className="bg-white rounded-[2rem] shadow-2xl shadow-slate-300/30 p-1 border border-slate-200 focus-within:border-slate-400 transition-all">
+        {/* Main prompt card */}
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #DDD8CE',
+            borderRadius: '4px',
+            overflow: 'hidden',
+            transition: 'border-color 180ms ease',
+          }}
+          onFocusCapture={e => ((e.currentTarget as HTMLDivElement).style.borderColor = '#1A1814')}
+          onBlurCapture={e => ((e.currentTarget as HTMLDivElement).style.borderColor = '#DDD8CE')}
+        >
           <textarea
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={e => setPrompt(e.target.value)}
             placeholder="e.g., A quiet afternoon, the smell of old paper, a place where the light is soft..."
-            className="w-full h-36 bg-transparent rounded-2xl p-6 text-slate-800 placeholder:text-slate-400 focus:outline-none transition-all resize-none text-lg leading-relaxed font-medium"
             disabled={isLoading}
+            rows={5}
+            style={{
+              width: '100%',
+              backgroundColor: 'transparent',
+              border: 'none',
+              outline: 'none',
+              padding: '20px 20px 8px',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '15px',
+              color: '#1A1814',
+              lineHeight: 1.75,
+              resize: 'none',
+              boxSizing: 'border-box',
+            }}
           />
-          <div className="flex justify-between items-center p-4">
+
+          {/* Card footer: drift link + submit button */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '12px 20px 16px',
+            }}
+          >
             <button
               type="button"
               onClick={onDrift}
               disabled={isLoading}
-              className="text-[11px] font-bold text-slate-500 hover:text-slate-900 uppercase tracking-widest px-4 transition-all"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '11px',
+                fontWeight: 400,
+                color: '#6B6457',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                transition: 'color 180ms ease',
+                padding: 0,
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
             >
               Just drift
             </button>
+
             <button
               type="submit"
               disabled={isLoading || !prompt.trim()}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-4 rounded-2xl transition-all flex items-center gap-3 disabled:opacity-20 text-sm md:text-base shadow-lg"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '13px',
+                fontWeight: 400,
+                letterSpacing: '0.04em',
+                color: '#1A1814',
+                backgroundColor: 'transparent',
+                border: '1px solid #1A1814',
+                borderRadius: '4px',
+                padding: '10px 20px',
+                cursor: isLoading || !prompt.trim() ? 'not-allowed' : 'pointer',
+                opacity: isLoading || !prompt.trim() ? 0.35 : 1,
+                transition: 'background-color 180ms ease, color 180ms ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}
+              onMouseEnter={e => {
+                if (!isLoading && prompt.trim()) {
+                  e.currentTarget.style.backgroundColor = '#1A1814';
+                  e.currentTarget.style.color = '#F9F6F0';
+                }
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#1A1814';
+              }}
             >
               {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                <span>Searching...</span>
               ) : (
-                <>
-                  See what's around
-                  <i className="fa-solid fa-arrow-right text-xs opacity-70"></i>
-                </>
+                <>See what's around →</>
               )}
             </button>
           </div>
         </div>
       </form>
 
+      {/* Revisit past walks */}
       {hasHistory && (
-        <div className="mt-10 text-center">
-          <button 
+        <div style={{ marginTop: '28px', textAlign: 'center' }}>
+          <button
             onClick={onOpenJournal}
-            className="text-xs font-bold text-slate-500 hover:text-slate-900 uppercase tracking-widest transition-all underline underline-offset-4 decoration-slate-200"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '11px',
+              fontWeight: 400,
+              color: '#6B6457',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              textDecoration: 'underline',
+              textUnderlineOffset: '4px',
+              textDecorationColor: '#DDD8CE',
+              transition: 'color 180ms ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
           >
             Revisit past walks
           </button>
         </div>
       )}
 
-      <div className="mt-14 flex flex-wrap justify-center gap-3">
-        {[
-          "Quiet reading nooks",
-          "Sunlit courtyards",
-          "The smell of roasting coffee",
-          "Hidden garden walls",
-          "Soft jazz and low light"
-        ].map((vibe) => (
+      {/* Suggestion pills */}
+      <div
+        style={{
+          marginTop: '40px',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '8px',
+        }}
+      >
+        {VIBES.map(vibe => (
           <button
             key={vibe}
             onClick={() => setPrompt(vibe)}
-            className="text-[11px] font-bold bg-white border border-slate-200 hover:border-slate-400 py-3 px-5 rounded-full text-slate-600 hover:text-slate-900 transition-all shadow-sm"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '11px',
+              fontWeight: 400,
+              color: '#6B6457',
+              backgroundColor: 'transparent',
+              border: '1px solid #DDD8CE',
+              borderRadius: '2px',
+              padding: '4px 10px',
+              cursor: 'pointer',
+              transition: 'border-color 180ms ease, color 180ms ease',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = '#1A1814';
+              e.currentTarget.style.color = '#1A1814';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = '#DDD8CE';
+              e.currentTarget.style.color = '#6B6457';
+            }}
           >
             {vibe}
           </button>

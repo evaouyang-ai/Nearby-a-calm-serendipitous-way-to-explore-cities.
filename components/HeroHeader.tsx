@@ -1,5 +1,6 @@
-// components/HeroHeader.tsx — Production version
-// Added: user avatar, sign-in/out button, "Discover" public map link
+// components/HeroHeader.tsx
+// Navigation bar: plain Playfair Display wordmark, no tagline, no blobs.
+// Floats above parchment — warm palette only.
 
 import React from 'react';
 import type { User } from '@supabase/supabase-js';
@@ -20,71 +21,169 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({
   onSignOut,
 }) => {
   return (
-    <header className="flex items-center justify-between p-4 md:p-6 border-b border-slate-100 bg-white/50 backdrop-blur-xl sticky top-0 z-50">
-      {/* Logo + tagline */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center shrink-0">
-            <div className="w-2 h-2 rounded-full bg-white animate-pulse"></div>
-          </div>
-          <h1 className="font-medium text-base md:text-lg tracking-tight text-slate-900 uppercase shrink-0">
-            Nearby
-          </h1>
-        </div>
-        <div className="text-[10px] md:text-[11px] font-semibold text-slate-500 uppercase tracking-[0.1em] md:tracking-widest leading-none opacity-90 sm:opacity-100">
-          something interesting is closer than you think
-        </div>
-      </div>
-
-      {/* Right side actions */}
-      <div className="flex items-center gap-1 md:gap-3">
-
-        {/* Public discover map */}
+    <header
+      className="flex items-center justify-between sticky top-0 z-50"
+      style={{
+        padding: '16px 24px',
+        backgroundColor: '#F9F6F0',
+      }}
+    >
+      {/* Left: back link + wordmark */}
+      <div className="flex items-center gap-6">
         <a
-          href="/discover"
-          className="hidden md:flex items-center gap-2 text-[11px] font-bold text-slate-500 hover:text-slate-900 uppercase tracking-widest transition-all p-2"
+          href="https://lifewitheveai.com/portfolio/"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '11px',
+            fontWeight: 400,
+            color: '#6B6457',
+            textDecoration: 'none',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            transition: 'color 180ms ease',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+          onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
         >
-          <i className="fa-solid fa-earth-americas text-sm"></i>
-          <span>Discover</span>
+          ← Portfolio
         </a>
 
-        {/* Scrapbook / Journal */}
+        {/* Wordmark */}
+        <span
+          className="font-playfair"
+          style={{
+            fontSize: '18px',
+            fontWeight: 400,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: '#1A1814',
+          }}
+        >
+          Nearby
+        </span>
+      </div>
+
+      {/* Right: nav links + auth */}
+      <div className="flex items-center gap-4">
+
+        {/* Discover map */}
+        <a
+          href="/discover"
+          className="hidden md:block"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '12px',
+            fontWeight: 400,
+            color: '#6B6457',
+            textDecoration: 'none',
+            letterSpacing: '0.04em',
+            transition: 'color 180ms ease',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+          onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
+        >
+          Discover
+        </a>
+
+        {/* Journal / Scrapbook */}
         <button
           onClick={onToggleScrapbook}
-          className="group flex items-center gap-2 text-[11px] font-bold text-slate-500 hover:text-slate-900 uppercase tracking-widest transition-all p-2"
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '12px',
+            fontWeight: 400,
+            color: '#6B6457',
+            letterSpacing: '0.04em',
+            transition: 'color 180ms ease',
+            padding: '4px 0',
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+          onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
         >
-          <span className="hidden md:inline opacity-0 group-hover:opacity-100 transition-all">
-            Journal
-          </span>
-          <div className="relative">
-            <i className="fa-solid fa-book-open text-sm md:text-base"></i>
+          <span className="hidden md:inline">Journal</span>
+          <span style={{ position: 'relative' }}>
+            <i className="fa-solid fa-book-open" style={{ fontSize: '13px' }}></i>
             {scrapbookCount > 0 && (
-              <span className="absolute -top-2 -right-2 w-4 h-4 bg-slate-900 text-white text-[9px] flex items-center justify-center rounded-full">
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '-8px',
+                  right: '-10px',
+                  width: '14px',
+                  height: '14px',
+                  backgroundColor: '#1A1814',
+                  color: '#F9F6F0',
+                  fontSize: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '2px',
+                }}
+              >
                 {scrapbookCount}
               </span>
             )}
-          </div>
+          </span>
         </button>
 
         {/* Auth */}
         {user ? (
-          <div className="flex items-center gap-2 ml-1">
-            <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden">
+          <div className="flex items-center gap-2">
+            <div
+              style={{
+                width: '26px',
+                height: '26px',
+                borderRadius: '2px',
+                backgroundColor: '#EDE9E2',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+              }}
+            >
               {user.user_metadata?.avatar_url ? (
                 <img
                   src={user.user_metadata.avatar_url}
                   alt="avatar"
-                  className="w-full h-full object-cover"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               ) : (
-                <span className="text-[11px] font-bold text-slate-600 uppercase">
+                <span
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    color: '#6B6457',
+                    textTransform: 'uppercase',
+                  }}
+                >
                   {(user.email ?? '?')[0]}
                 </span>
               )}
             </div>
             <button
               onClick={onSignOut}
-              className="text-[10px] font-bold text-slate-400 hover:text-slate-700 uppercase tracking-widest transition-all hidden md:block"
+              className="hidden md:block"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '11px',
+                fontWeight: 400,
+                color: '#6B6457',
+                letterSpacing: '0.04em',
+                transition: 'color 180ms ease',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
             >
               Sign out
             </button>
@@ -92,7 +191,27 @@ const HeroHeader: React.FC<HeroHeaderProps> = ({
         ) : (
           <button
             onClick={onSignIn}
-            className="ml-1 text-[11px] font-bold bg-slate-900 text-white px-4 py-2 rounded-xl hover:bg-slate-800 transition-all uppercase tracking-widest"
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '11px',
+              fontWeight: 400,
+              color: '#1A1814',
+              backgroundColor: 'transparent',
+              border: '1px solid #1A1814',
+              borderRadius: '4px',
+              padding: '6px 14px',
+              cursor: 'pointer',
+              letterSpacing: '0.04em',
+              transition: 'background-color 180ms ease, color 180ms ease',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.backgroundColor = '#1A1814';
+              e.currentTarget.style.color = '#F9F6F0';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#1A1814';
+            }}
           >
             Sign in
           </button>

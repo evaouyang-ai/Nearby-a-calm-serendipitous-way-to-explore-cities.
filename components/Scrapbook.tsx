@@ -1,3 +1,5 @@
+// components/Scrapbook.tsx
+// Journal overlay — parchment background, foxing-bordered cards, editorial typography.
 
 import React from 'react';
 import { JourneyMemory } from '../types';
@@ -13,10 +15,12 @@ const Scrapbook: React.FC<ScrapbookProps> = ({ memories, isOpen, onClose, onRevi
   if (!isOpen) return null;
 
   const handleShare = async (memory: JourneyMemory) => {
-    const text = `A journey from my journal:\n\n"${memory.plan.introduction}"\n\nStops recorded: ${memory.plan.steps.map(s => s.destination.name).join(', ')}\n\nExplore at ${window.location.origin}`;
+    const text = `A journey from my journal:\n\n"${memory.plan.introduction}"\n\nStops recorded: ${memory.plan.steps
+      .map(s => s.destination.name)
+      .join(', ')}\n\nExplore at ${window.location.origin}`;
     if (navigator.share) {
       try {
-        await navigator.share({ text: text, url: window.location.origin });
+        await navigator.share({ text, url: window.location.origin });
       } catch {}
     } else {
       await navigator.clipboard.writeText(text);
@@ -25,78 +29,296 @@ const Scrapbook: React.FC<ScrapbookProps> = ({ memories, isOpen, onClose, onRevi
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-white/98 backdrop-blur-xl animate-in fade-in duration-500 flex flex-col">
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 100,
+        backgroundColor: '#F9F6F0',
+        display: 'flex',
+        flexDirection: 'column',
+        animation: 'fadeIn 300ms ease-out',
+      }}
+    >
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      `}</style>
+
       {/* Header */}
-      <div className="px-6 py-8 border-b border-slate-100 flex justify-between items-center max-w-5xl mx-auto w-full">
+      <div
+        style={{
+          padding: '32px 24px 24px',
+          borderBottom: '1px solid #EDE9E2',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          maxWidth: '720px',
+          width: '100%',
+          margin: '0 auto',
+          boxSizing: 'border-box',
+        }}
+      >
         <div>
-          <h2 className="text-3xl font-serif-italic text-slate-900">Journal</h2>
-          <p className="text-slate-500 text-[11px] uppercase tracking-widest font-bold mt-1">Your past observations</p>
+          <h2
+            className="font-serif-italic"
+            style={{ fontSize: '32px', color: '#1A1814', margin: 0 }}
+          >
+            Journal
+          </h2>
+          <p
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '9px',
+              fontWeight: 500,
+              color: '#1A1814',
+              opacity: 0.45,
+              textTransform: 'uppercase',
+              letterSpacing: '0.12em',
+              marginTop: '6px',
+            }}
+          >
+            Your past observations
+          </p>
         </div>
-        <button 
+
+        <button
           onClick={onClose}
-          className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-100 transition-all active:scale-90"
+          style={{
+            width: '36px',
+            height: '36px',
+            border: '1px solid #DDD8CE',
+            borderRadius: '4px',
+            backgroundColor: 'transparent',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#6B6457',
+            transition: 'background-color 180ms ease, color 180ms ease',
+            flexShrink: 0,
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.backgroundColor = '#1A1814';
+            e.currentTarget.style.color = '#F9F6F0';
+            e.currentTarget.style.borderColor = '#1A1814';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = '#6B6457';
+            e.currentTarget.style.borderColor = '#DDD8CE';
+          }}
         >
-          <i className="fa-solid fa-xmark text-slate-500"></i>
+          <i className="fa-solid fa-xmark" style={{ fontSize: '14px' }}></i>
         </button>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-12 scroll-smooth">
-        <div className="max-w-2xl mx-auto space-y-12">
+      {/* Memory list */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '40px 24px',
+        }}
+      >
+        <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {memories.length === 0 ? (
-            <div className="text-center py-32">
-              <p className="text-slate-400 font-serif-italic text-xl">The pages are empty...</p>
-              <p className="text-slate-500 text-xs mt-4 uppercase tracking-widest font-bold">Go for a walk to begin</p>
+            <div style={{ textAlign: 'center', paddingTop: '120px' }}>
+              <p
+                className="font-serif-italic"
+                style={{ fontSize: '22px', color: '#A09888' }}
+              >
+                The pages are empty...
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '9px',
+                  fontWeight: 500,
+                  color: '#1A1814',
+                  opacity: 0.4,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  marginTop: '16px',
+                }}
+              >
+                Go for a walk to begin
+              </p>
             </div>
           ) : (
-            memories.map((memory) => (
-              <div 
+            memories.map(memory => (
+              <div
                 key={memory.id}
-                className="group relative bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-10 shadow-sm hover:shadow-2xl hover:shadow-slate-300/30 transition-all duration-700"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #DDD8CE',
+                  borderRadius: '4px',
+                  padding: '28px 28px 24px',
+                  transition: 'border-color 180ms ease',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = '#A09888')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = '#DDD8CE')}
               >
-                <div className="flex justify-between items-start mb-6">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em]">
-                    {new Date(memory.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                {/* Card header: date + location tags + share */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '10px',
+                      fontWeight: 400,
+                      color: '#1A1814',
+                      opacity: 0.45,
+                    }}
+                  >
+                    {new Date(memory.timestamp).toLocaleDateString(undefined, {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
                   </span>
-                  <div className="flex gap-3 items-center">
-                    <button 
+
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <button
                       onClick={() => handleShare(memory)}
-                      className="text-sm text-slate-400 hover:text-slate-800 p-2 transition-colors"
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: '#A09888',
+                        fontSize: '12px',
+                        padding: '2px 4px',
+                        transition: 'color 180ms ease',
+                      }}
                       title="Share this entry"
+                      onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#A09888')}
                     >
                       <i className="fa-solid fa-share-nodes"></i>
                     </button>
+
                     {memory.plan.steps.slice(0, 2).map((step, i) => (
-                      <span key={i} className="text-[10px] bg-slate-100 text-slate-600 px-3 py-1 rounded uppercase tracking-wider font-bold">
+                      <span
+                        key={i}
+                        style={{
+                          fontFamily: "'Inter', sans-serif",
+                          fontSize: '10px',
+                          fontWeight: 400,
+                          color: '#6B6457',
+                          border: '1px solid #DDD8CE',
+                          borderRadius: '2px',
+                          padding: '2px 8px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.08em',
+                        }}
+                      >
                         {step.destination.location}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-6">
-                  <p className="text-xl md:text-2xl font-serif-italic text-slate-900 leading-relaxed italic">
-                    "{memory.plan.introduction}"
-                  </p>
-                  
-                  {/* First memory detail preview */}
-                  <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                    <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-2">First detail noted:</p>
-                    <p className="text-slate-700 text-sm italic font-medium">"{memory.plan.steps[0]?.destination.sensoryDetail}"</p>
-                  </div>
+                {/* Quote */}
+                <p
+                  className="font-serif-italic"
+                  style={{
+                    fontSize: '20px',
+                    color: '#1A1814',
+                    lineHeight: 1.55,
+                    marginBottom: '20px',
+                  }}
+                >
+                  "{memory.plan.introduction}"
+                </p>
 
-                  <div className="flex items-center justify-between pt-6 border-t border-slate-100">
-                    <p className="text-xs text-slate-500 italic font-medium">
-                      {memory.plan.steps.length} moments recorded
-                    </p>
-                    <button 
-                      onClick={() => onRevisit(memory)}
-                      className="text-[11px] font-bold text-slate-600 group-hover:text-slate-900 uppercase tracking-[0.3em] transition-all flex items-center gap-3"
-                    >
-                      Open Walk
-                      <i className="fa-solid fa-arrow-right-long opacity-100 group-hover:translate-x-1 transition-all"></i>
-                    </button>
-                  </div>
+                {/* First detail */}
+                <div
+                  style={{
+                    backgroundColor: '#F9F6F0',
+                    border: '1px solid #EDE9E2',
+                    borderRadius: '4px',
+                    padding: '14px 16px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '9px',
+                      fontWeight: 500,
+                      color: '#1A1814',
+                      opacity: 0.4,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.12em',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    First detail noted
+                  </p>
+                  <p
+                    className="font-serif-italic"
+                    style={{ fontSize: '13px', color: '#6B6457', lineHeight: 1.6 }}
+                  >
+                    "{memory.plan.steps[0]?.destination.sensoryDetail}"
+                  </p>
+                </div>
+
+                {/* Footer: moments count + open walk */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: '16px',
+                    borderTop: '1px solid #EDE9E2',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '11px',
+                      fontWeight: 400,
+                      color: '#1A1814',
+                      opacity: 0.45,
+                    }}
+                  >
+                    {memory.plan.steps.length} moments recorded
+                  </span>
+
+                  <button
+                    onClick={() => onRevisit(memory)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '11px',
+                      fontWeight: 400,
+                      color: '#6B6457',
+                      opacity: 0.7,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      transition: 'color 180ms ease, opacity 180ms ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.color = '#1A1814';
+                      e.currentTarget.style.opacity = '1';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.color = '#6B6457';
+                      e.currentTarget.style.opacity = '0.7';
+                    }}
+                  >
+                    Open Walk →
+                  </button>
                 </div>
               </div>
             ))
@@ -105,8 +327,26 @@ const Scrapbook: React.FC<ScrapbookProps> = ({ memories, isOpen, onClose, onRevi
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-8 border-t border-slate-100 text-center">
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.5em]">Nearby Archive — Co-created with Eve</p>
+      <div
+        style={{
+          padding: '20px 24px',
+          borderTop: '1px solid #EDE9E2',
+          textAlign: 'center',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '9px',
+            fontWeight: 500,
+            color: '#1A1814',
+            opacity: 0.35,
+            textTransform: 'uppercase',
+            letterSpacing: '0.5em',
+          }}
+        >
+          Nearby Archive — Co-created with Eve
+        </p>
       </div>
     </div>
   );

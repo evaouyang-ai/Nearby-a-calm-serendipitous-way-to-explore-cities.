@@ -1,3 +1,5 @@
+// components/Storyboard.tsx
+// Past moments grid — white cards on parchment, editorial type, no blue.
 
 import React, { useState } from 'react';
 import { JourneyPlan } from '../types';
@@ -12,18 +14,13 @@ const Storyboard: React.FC<StoryboardProps> = ({ plan, onReset, onViewJournal })
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied'>('idle');
 
   const handleShare = async () => {
-    const text = `A collection of moments co-created with Nearby:\n\n"${plan.introduction}"\n\nStops:\n${plan.steps.map(s => `• ${s.destination.name}`).join('\n')}\n\nExplore at ${window.location.origin}`;
-    
+    const text = `A collection of moments co-created with Nearby:\n\n"${plan.introduction}"\n\nStops:\n${plan.steps
+      .map(s => `• ${s.destination.name}`)
+      .join('\n')}\n\nExplore at ${window.location.origin}`;
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: 'Nearby Storyboard',
-          text: text,
-          url: window.location.origin
-        });
-      } catch (err) {
-        console.log('Share cancelled');
-      }
+        await navigator.share({ title: 'Nearby Storyboard', text, url: window.location.origin });
+      } catch {}
     } else {
       await navigator.clipboard.writeText(text);
       setShareStatus('copied');
@@ -32,70 +29,213 @@ const Storyboard: React.FC<StoryboardProps> = ({ plan, onReset, onViewJournal })
   };
 
   const shareOnWhatsApp = () => {
-    const text = `Take a look at my walk with Nearby:\n\n"${plan.introduction}"\n\n${plan.steps.map(s => `• ${s.destination.name}`).join('\n')}\n\nStart your own journey: ${window.location.origin}`;
+    const text = `Take a look at my walk with Nearby:\n\n"${plan.introduction}"\n\n${plan.steps
+      .map(s => `• ${s.destination.name}`)
+      .join('\n')}\n\nStart your own journey: ${window.location.origin}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24">
-      <div className="text-center mb-24">
-        <h2 className="text-4xl font-serif-italic text-slate-900 mb-4">Past Moments</h2>
-        <p className="text-slate-600 text-base italic font-medium">A collection of things noticed on your walk.</p>
-        
-        <div className="mt-10 flex justify-center gap-10">
-          <button 
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '80px 24px' }}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+        <h2
+          className="font-serif-italic"
+          style={{ fontSize: '36px', color: '#1A1814', marginBottom: '12px' }}
+        >
+          Past Moments
+        </h2>
+        <p
+          className="font-serif-italic"
+          style={{ fontSize: '15px', color: '#6B6457' }}
+        >
+          A collection of things noticed on your walk.
+        </p>
+
+        <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'center', gap: '40px' }}>
+          <button
             onClick={handleShare}
-            className="text-xs font-bold text-slate-600 hover:text-slate-900 uppercase tracking-widest transition-all flex items-center gap-2"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '11px',
+              fontWeight: 400,
+              color: '#6B6457',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              transition: 'color 180ms ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
           >
             <i className="fa-solid fa-share-nodes"></i>
             {shareStatus === 'copied' ? 'Copied' : 'Share Story'}
           </button>
-          <button 
+          <button
             onClick={shareOnWhatsApp}
-            className="text-xs font-bold text-emerald-600 hover:text-emerald-700 uppercase tracking-widest transition-all flex items-center gap-2"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '11px',
+              fontWeight: 400,
+              color: '#6B6457',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              transition: 'color 180ms ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
           >
-            <i className="fa-brands fa-whatsapp text-base"></i>
+            <i className="fa-brands fa-whatsapp"></i>
             WhatsApp
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      {/* Card grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '32px',
+        }}
+      >
         {plan.steps.map((step, idx) => (
-          <div 
-            key={idx} 
-            className="group space-y-6"
-          >
-            <div className="aspect-square bg-white rounded-[2rem] p-10 flex flex-col justify-center text-center border border-slate-200 group-hover:shadow-2xl group-hover:shadow-slate-300/30 transition-all duration-500">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-4">
+          <div key={idx}>
+            <div
+              style={{
+                aspectRatio: '1 / 1',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #DDD8CE',
+                borderRadius: '4px',
+                padding: '32px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                textAlign: 'center',
+                transition: 'border-color 180ms ease',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = '#A09888')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = '#DDD8CE')}
+            >
+              <span
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '9px',
+                  fontWeight: 500,
+                  color: '#1A1814',
+                  opacity: 0.45,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  marginBottom: '16px',
+                  display: 'block',
+                }}
+              >
                 {step.destination.location}
               </span>
-              <h4 className="text-2xl md:text-3xl font-serif-italic text-slate-900 mb-4">
+              <h4
+                className="font-serif-italic"
+                style={{ fontSize: '24px', color: '#1A1814', marginBottom: '16px' }}
+              >
                 {step.destination.name}
               </h4>
-              <p className="text-slate-700 text-sm md:text-base leading-relaxed italic font-medium">
+              <p
+                className="font-serif-italic"
+                style={{ fontSize: '14px', color: '#6B6457', lineHeight: 1.6 }}
+              >
                 "{step.destination.description}"
               </p>
             </div>
-            
-            <div className="px-4 text-center">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">A detail remembered</p>
-              <p className="text-slate-700 text-sm italic font-medium">"{step.destination.sensoryDetail}"</p>
+
+            <div style={{ padding: '16px 4px', textAlign: 'center' }}>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '9px',
+                  fontWeight: 500,
+                  color: '#1A1814',
+                  opacity: 0.45,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.12em',
+                  marginBottom: '6px',
+                }}
+              >
+                A detail remembered
+              </p>
+              <p
+                className="font-serif-italic"
+                style={{ fontSize: '13px', color: '#6B6457', lineHeight: 1.6 }}
+              >
+                "{step.destination.sensoryDetail}"
+              </p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-40 flex flex-col items-center gap-10">
-        <button 
+      {/* Footer actions */}
+      <div
+        style={{
+          marginTop: '96px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '24px',
+        }}
+      >
+        <button
           onClick={onReset}
-          className="text-base font-bold text-slate-900 border-b-2 border-slate-900 pb-1 hover:text-slate-600 hover:border-slate-600 transition-all"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '13px',
+            fontWeight: 400,
+            color: '#1A1814',
+            backgroundColor: 'transparent',
+            border: '1px solid #1A1814',
+            borderRadius: '4px',
+            padding: '10px 24px',
+            cursor: 'pointer',
+            letterSpacing: '0.04em',
+            transition: 'background-color 180ms ease, color 180ms ease',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.backgroundColor = '#1A1814';
+            e.currentTarget.style.color = '#F9F6F0';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = '#1A1814';
+          }}
         >
           Look for something new
         </button>
-        <button 
+
+        <button
           onClick={onViewJournal}
-          className="text-xs font-bold text-slate-500 hover:text-slate-900 uppercase tracking-widest transition-all"
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '11px',
+            fontWeight: 400,
+            color: '#6B6457',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            transition: 'color 180ms ease',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#1A1814')}
+          onMouseLeave={e => (e.currentTarget.style.color = '#6B6457')}
         >
           View all previous walks
         </button>

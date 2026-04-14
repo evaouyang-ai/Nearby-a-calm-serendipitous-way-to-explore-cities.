@@ -11,6 +11,7 @@ import { ApiClient } from './services/apiClient';
 import { loadMemories, saveMemory, migrateLocalToCloud } from './lib/scrapbookStore';
 import { supabase } from './lib/supabase';
 import HeroHeader from './components/HeroHeader';
+import HeroSection from './components/HeroSection';
 import JourneyInput from './components/JourneyInput';
 import ItineraryView from './components/ItineraryView';
 import Storyboard from './components/Storyboard';
@@ -138,7 +139,7 @@ const App: React.FC = () => {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-blue-200">
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F9F6F0', color: '#1A1814' }}>
       <HeroHeader
         onToggleScrapbook={() => setIsScrapbookOpen(true)}
         scrapbookCount={scrapbook.length}
@@ -166,7 +167,8 @@ const App: React.FC = () => {
 
       <main className="flex-grow pb-24">
         {phase === JourneyPhase.INPUT && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="animate-in fade-in duration-700">
+            <HeroSection />
             <JourneyInput
               onStart={handleStartJourney}
               onDrift={handleDrift}
@@ -177,15 +179,42 @@ const App: React.FC = () => {
 
             {errorMsg && (
               <div className="max-w-xl mx-auto px-6 mt-8">
-                <div className="bg-white border border-slate-200 p-8 rounded-[2rem] text-slate-600 text-sm flex gap-6 items-start shadow-xl shadow-slate-200/50">
-                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center shrink-0">
-                    <i className="fa-solid fa-circle-info text-slate-400"></i>
-                  </div>
+                <div
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #DDD8CE',
+                    borderRadius: '4px',
+                    padding: '24px 28px',
+                    display: 'flex',
+                    gap: '16px',
+                    alignItems: 'flex-start',
+                  }}
+                >
                   <div className="flex-1">
-                    <p className="font-bold mb-2 text-slate-900 uppercase tracking-widest text-[11px]">
+                    <p
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: '9px',
+                        fontWeight: 500,
+                        color: '#1A1814',
+                        opacity: 0.5,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.12em',
+                        marginBottom: '8px',
+                      }}
+                    >
                       A quiet interruption
                     </p>
-                    <p className="leading-relaxed font-medium">{errorMsg}</p>
+                    <p
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: '14px',
+                        color: '#6B6457',
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {errorMsg}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -212,11 +241,6 @@ const App: React.FC = () => {
         )}
       </main>
 
-      {/* Ambient background blobs */}
-      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-500/5 blur-[150px] rounded-full"></div>
-      </div>
     </div>
   );
 };
