@@ -84,14 +84,12 @@ const HeroSection: React.FC = () => {
         }
         @media (max-width: 768px) {
           .hero-text-block {
-            background: linear-gradient(
-              to bottom,
-              rgba(249,246,240,0.92) 0%,
-              rgba(249,246,240,0.85) 60%,
-              rgba(249,246,240,0) 100%
+            background: radial-gradient(
+              ellipse 120% 100% at 20% 50%,
+              rgba(249,246,240,0.88) 0%,
+              rgba(249,246,240,0.70) 45%,
+              rgba(249,246,240,0) 75%
             ) !important;
-            padding-top: 24px;
-            padding-bottom: 40px;
           }
         }
       `}</style>
