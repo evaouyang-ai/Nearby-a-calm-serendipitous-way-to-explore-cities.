@@ -46,6 +46,7 @@ const HeroSection: React.FC = () => {
             maxWidth: '42%',
             paddingLeft: 'clamp(24px, 6vw, 80px)',
             paddingRight: '24px',
+            background: 'radial-gradient(ellipse at left center, rgba(249,246,240,0.75) 0%, rgba(249,246,240,0) 60%)',
           }}
           className="hero-text-block"
         >
