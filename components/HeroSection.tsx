@@ -46,7 +46,7 @@ const HeroSection: React.FC = () => {
             maxWidth: '42%',
             paddingLeft: 'clamp(24px, 6vw, 80px)',
             paddingRight: '24px',
-            background: 'radial-gradient(ellipse at left center, rgba(249,246,240,0.75) 0%, rgba(249,246,240,0) 60%)',
+            background: 'radial-gradient(ellipse at left center, rgba(249,246,240,0.85) 0%, rgba(249,246,240,0) 65%)',
           }}
           className="hero-text-block"
         >
@@ -80,6 +80,18 @@ const HeroSection: React.FC = () => {
         @media (max-width: 640px) {
           .hero-text-block {
             max-width: 85% !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .hero-text-block {
+            background: linear-gradient(
+              to bottom,
+              rgba(249,246,240,0.92) 0%,
+              rgba(249,246,240,0.85) 60%,
+              rgba(249,246,240,0) 100%
+            ) !important;
+            padding-top: 24px;
+            padding-bottom: 40px;
           }
         }
       `}</style>
